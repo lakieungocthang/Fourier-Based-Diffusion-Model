@@ -1,14 +1,14 @@
 from .layers import *
 
 class FourierDiffusionModel(nn.Module):
-    def __init__(self, timesteps):
+    def __init__(self):
         super(FourierDiffusionModel, self).__init__()
         self.fourier_transform = FourierTransformLayer()
         self.inverse_fourier_transform = InverseFourierTransformLayer()
         self.high_freq_conv = HighFrequencyConvLayer()
         self.low_freq_conv = LowFrequencyConvLayer()
-        self.forward_process = ForwardProcessLayer(timesteps)
-        self.reverse_process = ReverseProcessLayer(timesteps)
+        self.forward_process = ForwardProcessLayer()
+        self.reverse_process = ReverseProcessLayer()
 
     def forward(self, x, t):
         # Fourier Transform

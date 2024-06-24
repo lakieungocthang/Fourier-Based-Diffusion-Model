@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.fft
 from .UNet import UNet
+from ..config import *
 
 class FourierTransformLayer(nn.Module):
     def __init__(self):
@@ -50,7 +51,7 @@ class LowFrequencyConvLayer(nn.Module):
         return self.conv(x)
 
 class ForwardProcessLayer(nn.Module):
-    def __init__(self, timesteps, beta_start=0.0001, beta_end=0.02):
+    def __init__(self, timesteps=timesteps, beta_start=beta_start, beta_end=beta_end):
         super(ForwardProcessLayer, self).__init__()
         self.timesteps = timesteps
         self.betas = torch.linspace(beta_start, beta_end, timesteps)
@@ -64,13 +65,13 @@ class ForwardProcessLayer(nn.Module):
         return sqrt_alphas_cumprod_t * x + sqrt_one_minus_alphas_cumprod_t * noise, noise
 
 class ReverseProcessLayer(nn.Module):
-    def __init__(self, timesteps, beta_start=0.0001, beta_end=0.02):
+    def __init__(self, timesteps=timesteps, beta_start=beta_start, beta_end=beta_end):
         super(ReverseProcessLayer, self).__init__()
         self.timesteps = timesteps
         self.betas = torch.linspace(beta_start, beta_end, timesteps)
         self.alphas = 1.0 - self.betas
         self.alphas_cumprod = torch.cumprod(self.alphas, 0)
-        self.model = Unet(in_channels=2, out_channels=1)  # Adjust in_channels according to the data
+        self.model = UNet(in_channels=in_channels, out_channels=out_channels)
 
     def forward(self, x, t):
         pred_noise = self.model(x)
