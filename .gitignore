@@ -1,0 +1,23 @@
+# Ignore data and model directories
+data/*
+models/*
+
+# Ignore hidden files, except for .gitignore
+.*
+!/.gitignore
+
+# Ignore temporary files and log files
+*.tmp
+*~
+*.log
+
+# Ignore output and results directories
+results/
+
+# Ignore IDE configuration directories
+.idea/
+.vscode/
+
+# Ignore cache files
+__pycache__/
+*.pyc
